@@ -1,7 +1,10 @@
 import {useState} from 'react';
 import './App.css';
 let style = {
-    app: {}
+    littleSquares: {
+      flex: "25%",
+      boxShadow: "0px 0px 0px 0.5px white inset"
+    }
 }
 
 function App() {
@@ -13,6 +16,31 @@ function App() {
             }
         }
         return false
+    }
+    let inputCheck = (value)=>{
+      console.log(value + "THERE IS A MATH EXPRESSION AND A NUMBER")
+      if (isNaN(value) && checkIfMathExpression(value.slice(value.length - 1)) === true && isNaN(value.slice(0, -1)) === false) {
+        //SI EL ULTIMO CARACTER AGREGADO ES UNA EXPRESION MATEMATICA ENTONCES APLICA LA FUNCION SOLVEMATH
+        //EL SLICE ES PARA CHEQUEAR QUE ANTES DE LA EXPRESION HAY UN NUMERO VALIDO PARA REALIZAR LA OPERACION Y TAMBIEN PARA VERIFICAR SI ES UNA EXPRESION
+        //MATEMATICA O NO
+        console.log(value + "THERE IS A MATH EXPRESSION AND A NUMBER")
+          setMathOperation(value.slice(value.length - 1));
+          solveMath(value.slice(0, -1));
+      } 
+      else if (isNaN(value) && checkIfMathExpression(value) === false && value.length > 0) {
+         // EN CASO DE QUE EL CARACTER INGRESADO NO SEA UNA EXPRESION MATEMATICA SE HACE DISPLAY DEL MENSAJE DE ERROR Y
+         // SE ELIMINAN LOS VALORES GUARDADOS DE LA OPERACION ANTERIOR
+         console.log(value + "THERE ISNT A MATH EXPRESSION BUT THERE IS A NUMBER")
+          setValue("");
+          setMathOperation("");
+          setInput("");
+          setMessage("La calculadora sólo acepta números y símbolos matematicos!")
+      }
+      else{
+        console.log(value + "NOTHING")
+          setInput(value);
+          setMessage("")
+      }
     }
     const [input,
         setInput] = useState(0)//INPUT DEL USUARIO
@@ -49,8 +77,6 @@ function App() {
                 default:
                     console.log("error")
             }
-            setValue("");
-            setMathOperation("");
         } else {
             setValue(passedValue)
             setInput("")
@@ -61,70 +87,50 @@ function App() {
             <div>
                 <div>
                     <input
-                        onChange={(e) => {
-                        let value = e.currentTarget.value;
-                        if (isNaN(value) && checkIfMathExpression(value.slice(value.length - 1)) === true && isNaN(value.slice(0, -1)) === false) {
-                          //SI EL ULTIMO CARACTER AGREGADO ES UNA EXPRESION MATEMATICA ENTONCES APLICA LA FUNCION SOLVEMATH
-                          //EL SLICE ES PARA CHEQUEAR QUE ANTES DE LA EXPRESION HAY UN NUMERO VALIDO PARA REALIZAR LA OPERACION Y TAMBIEN PARA VERIFICAR SI ES UNA EXPRESION
-                          //MATEMATICA O NO
-                            setMathOperation(value.slice(value.length - 1));
-                            solveMath(value.slice(0, -1));
-                        } 
-                        else if (isNaN(value) && checkIfMathExpression(value) === false && value.length > 0) {
-                           // EN CASO DE QUE EL CARACTER INGRESADO NO SEA UNA EXPRESION MATEMATICA SE HACE DISPLAY DEL MENSAJE DE ERROR Y
-                           // SE ELIMINAN LOS VALORES GUARDADOS DE LA OPERACION ANTERIOR
-                            setValue("");
-                            setMathOperation("");
-                            setInput("");
-                            setMessage("La calculadora sólo acepta números y símbolos matematicos!")
-                        }
-                        else{
-                            setInput(value);
-                            setMessage("")
-                        }
-                    }}
+                        onChange={(e) => inputCheck(e.currentTarget.value)}
                     // AL APRETAR ENTER SE RESUELVE LA OPERACION
                         onKeyDown={(e) => e.key === "Enter" 
                         ? solveMath(e.currentTarget.value)
                         : null}
+                        style={{textAlign: "right"}}
                         value={input}/>
                     <div>{message}</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div>C</div>
-                    <div>%</div>
+                    <div style={{flex:"75%", boxShadow: "0px 0px 0px 0.5px white inset"}}>C</div>
+                    <div style={{flex:"25%", boxShadow: "0px 0px 0px 0.5px white inset"}}>%</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div>7</div>
-                    <div>8</div>
-                    <div>9</div>
-                    <div>X</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "7")}>7</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "8")}>8</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "9")}>9</div>
+                    <div style={style.littleSquares} onClick={()=>inputCheck(input + "*")}>X</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div>-</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "4")}>4</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "5")}>5</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "6")}>6</div>
+                    <div style={style.littleSquares} onClick={()=>inputCheck(input + "-")}>-</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>+</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "1")}>1</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "2")}>2</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(input + "3")}>3</div>
+                    <div style={style.littleSquares} onClick={()=>inputCheck(input + "+")}>+</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div>0</div>
-                    <div>=</div>
+                    <div style={{flex:"75%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>setInput(input + "0")}>0</div>
+                    <div style={{flex:"25%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>solveMath(input)}>=</div>
                 </div>
             </div>
         </div>
