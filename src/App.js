@@ -55,23 +55,19 @@ function App() {
             switch (mathOperation) {
                 case "-":
                     setInput((parseInt(savedValue) - parseInt(passedValue)));
-                    setValue("");
                     setMathOperation("");
                     break
                 case "+":
                     setInput((parseInt(savedValue) + parseInt(passedValue)));
-                    setValue("");
                     setMathOperation("");
                     break
                 case "/":
                     setInput((parseInt(savedValue) / parseInt(passedValue)));
-                    setValue("");
                     setMathOperation("");
                     break
                 case "*":
                     setInput((parseInt(savedValue) * parseInt(passedValue)));
                     console.log("SADSD");
-                    setValue("");
                     setMathOperation("");
                     break
                 default:
@@ -99,31 +95,31 @@ function App() {
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={{flex:"75%", boxShadow: "0px 0px 0px 0.5px white inset"}}>C</div>
-                    <div style={{flex:"25%", boxShadow: "0px 0px 0px 0.5px white inset"}}>%</div>
+                    <div style={{flex:"75%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>{setValue("");setMathOperation(""); setInput("")}}>C</div>
+                    <div style={{flex:"25%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>inputCheck(input + "/")}>%</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "7")}>7</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "8")}>8</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "9")}>9</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "7"), 10)/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}>7</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "8"), 10)}>8</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "9"), 10)}>9</div>
                     <div style={style.littleSquares} onClick={()=>inputCheck(input + "*")}>X</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "4")}>4</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "5")}>5</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "6")}>6</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "4"), 10)}>4</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "5"), 10)}>5</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "6"), 10)}>6</div>
                     <div style={style.littleSquares} onClick={()=>inputCheck(input + "-")}>-</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "1")}>1</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "2")}>2</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(input + "3")}>3</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "1"), 10)}>1</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "2"), 10)}>2</div>
+                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "3"), 10)}>3</div>
                     <div style={style.littleSquares} onClick={()=>inputCheck(input + "+")}>+</div>
                 </div>
                 <div style={{
