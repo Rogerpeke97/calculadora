@@ -14,6 +14,7 @@ let style = {
       transition: 'all 0.2s ease-out',
       borderRadius: "15px",
       marginTop: "13px",
+      cursor: "pointer",
       marginLeft: "11px",
       marginRight: "11px"
     },
@@ -33,6 +34,7 @@ let style = {
     },
     topBottomButtons:{
         flex:"25%",
+        cursor: "pointer",
         background: "linear-gradient(-45deg, rgba(0,0,0,0.22), brown)", 
         borderRadius: "15px",
         boxShadow: "0 12px gray",
@@ -43,6 +45,7 @@ let style = {
     },
     largeButtons: {
         flex:"87%",
+        cursor: "pointer",
         boxShadow: "0 12px gray",
         marginTop: "13px",
         marginBottom: "5px",
