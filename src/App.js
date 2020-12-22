@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import './App.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -30,7 +30,8 @@ let style = {
         maxWidth:"350px",
         color: "white",
         fontWeight: "bold",
-        textShadow: "2px 2px 2px black"
+        textShadow: "2px 2px 2px black",
+        position: "relative"
     },
     topBottomButtons:{
         flex:"25%",
@@ -84,8 +85,6 @@ let style = {
 }
 
 function App() {
-
-
     let checkIfMathExpression = (e) => {//CHEQUEAR SI EL INPUT INGRESADO ES UNA EXPRESION MATEMATICA
         let array = ["*", "/", "+", "-"]
         for (let i = 0; i < array.length; i++) {
@@ -193,6 +192,7 @@ const calculator = useRef(0)
 const [shiftX, setShiftX] = useState(0)
 const [shiftY, setShiftY] = useState(0)
 let onMouseDown = (e)=>{
+    setLoaded(true)
     if(isMoving === false){
     setShiftX(e.clientX - calculator.current.getBoundingClientRect().left);
     setShiftY(e.clientY - calculator.current.getBoundingClientRect().top);
@@ -216,7 +216,7 @@ let mouseMoveTrigger = (e)=>{
 const [iconState, setIconState] = useState(0)
 
 //AÑADIR NUMEROS AL INPUT
-
+const [loaded, setLoaded] = useState(false);
 let addNumbers = (e, numero)=>{
     console.log(input)
     if(input < 999999999999999){
@@ -224,11 +224,20 @@ let addNumbers = (e, numero)=>{
     changeCssButton(e)
     }
 }
+// MANEJAR WINDOW RESIZE 
+
+  useEffect(()=>{
+    window.addEventListener("resize", ()=>{
+        calculator.current.style.position = "relative"
+        calculator.current.style.left = "0px"
+        calculator.current.style.top = "0px"
+    })
+  },[])
 
 // ON MOUSEUP SE LEVANTA EL MOUSE Y UTILIZAMOS EL DIV PADRE PARA TRACKEAR EL MOVIMIENTO/ EVENTOS 
     return (
-        <div className="App" ref={app} onMouseUp={()=>{setMoving(false); setIconState(0)}}  onMouseMove={(e)=>mouseMoveTrigger(e)}>
-            <div style={style.calculadoraContainer} ref={calculator}>
+        <div className="App" ref={app} onMouseUp={()=>{setMoving(false); setIconState(0)}} onMouseMove={(e)=>mouseMoveTrigger(e)}>
+            <div style={style.calculadoraContainer} ref={calculator} >
                 <div>
                     <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginRight: "25px"}}>
                     <FontAwesomeIcon style={iconState === 0 ? style.fontAwesomeDrag : style.fontAwesomeDragGrab} onMouseDown={(e)=>{onMouseDown(e); setIconState(1)}} icon={faMouse} />
