@@ -10,7 +10,7 @@ let style = {
     littleSquares: {
       flex: "25%",
       boxShadow: "0 12px gray",
-      backgroundColor: "#4CAF50",
+      background: "linear-gradient(-45deg, rgba(0,0,0,0.22), brown)",
       transition: 'all 0.2s ease-out',
       borderRadius: "15px",
       marginTop: "13px",
@@ -18,17 +18,22 @@ let style = {
       marginRight: "11px"
     },
     calculadoraContainer:{
-        backgroundColor: "#7F5A83",
-        paddingBottom:"5%",
-        borderRadius: "5%",
+        background: "linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(200,90,100,0.25))",
+        paddingBottom:"20px",
+        borderRadius: "20px",
         boxShadow: "6px 6px 6px 0px rgb(70, 70, 70), 15px 15px 16px 0px #000000",
         display: "grid",
-        height:"600px",
-        width: "500px",
+        minHeight:"400px",
+        maxHeight:"400px",
+        minWidth:"250px",
+        maxWidth:"350px",
+        color: "white",
+        fontWeight: "bold",
+        textShadow: "2px 2px 2px black"
     },
     topBottomButtons:{
         flex:"25%",
-        backgroundColor: "#4CAF50", 
+        background: "linear-gradient(-45deg, rgba(0,0,0,0.22), brown)", 
         borderRadius: "15px",
         boxShadow: "0 12px gray",
         marginTop: "13px",
@@ -44,7 +49,7 @@ let style = {
         marginLeft: "11px",
         marginRight: "7px",
         borderRadius: "15px",
-        backgroundColor: "#4CAF50", 
+        background: "linear-gradient(-45deg, rgba(0,0,0,0.22), brown)", 
     },
     input:{
         textAlign: "right",
@@ -61,7 +66,18 @@ let style = {
         marginTop: "5%",
         marginLeft: "5%",
         marginRight: "5%"
+    },
+    fontAwesomeDrag: {
+        color: "white",
+        cursor: "grab",
+        transition: "all 0.5s ease-out",
+
+    },
+    fontAwesomeDragGrab: {
+        color: "black",
+        cursor: "grabbing"
     }
+
 }
 
 function App() {
@@ -193,13 +209,16 @@ let mouseMoveTrigger = (e)=>{
     onMouseMove(e.pageX, e.pageY) // PAGE X Y PAGE Y CORRESPONDEN A LA UBICACION DEL MOUSE RESPECTO DEL BORDE IZQUIERDO DE LA PAG
 }
 
+//FONTAWESOME
+const [iconState, setIconState] = useState(0)
+
 // ON MOUSEUP SE LEVANTA EL MOUSE Y UTILIZAMOS EL DIV PADRE PARA TRACKEAR EL MOVIMIENTO/ EVENTOS 
     return (
-        <div className="App" ref={app} onMouseUp={()=>setMoving(false)}  onMouseMove={(e)=>mouseMoveTrigger(e)}>
+        <div className="App" ref={app} onMouseUp={()=>{setMoving(false); setIconState(0)}}  onMouseMove={(e)=>mouseMoveTrigger(e)}>
             <div style={style.calculadoraContainer} ref={calculator}>
                 <div>
                     <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginRight: "25px"}}>
-                    <FontAwesomeIcon onMouseDown={(e)=>onMouseDown(e)} icon={faMouse} />
+                    <FontAwesomeIcon style={iconState === 0 ? style.fontAwesomeDrag : style.fontAwesomeDragGrab} onMouseDown={(e)=>{onMouseDown(e); setIconState(1)}} icon={faMouse} />
                     </div>
                     <input
                         ref={focusInput}
