@@ -161,37 +161,36 @@ function App() {
            }
        }
     }
-//MOVER LA CALCULADORA ALREDEDOR DEL DIV APP
+//MOVER LA CALCULADORA ALREDEDOR DEL DIV APP, FUNCION ADAPTADA AL TUTORIAL DE JAVASCRIPT.INFO: https://javascript.info/mouse-drag-and-drop
 const [isMoving, setMoving] = useState(false)
 const app = useRef(0)
 const calculator = useRef(0)
+const [shiftX, setShiftX] = useState(0)
+const [shiftY, setShiftY] = useState(0)
 let onMouseDown = (e)=>{
     if(isMoving === false){
-        console.log("workClick")
+    setShiftX(e.clientX - calculator.current.getBoundingClientRect().left);
+    setShiftY(e.clientY - app.current.getBoundingClientRect().top);
     setMoving(true)
-    let value = e.currentTarget;
-    value.style.position = 'absolute';
-    value.style.zIndex = 1000;
-    onMouseMove(e);
+    onMouseMove(e.pageX, e.pageY)
     }
 }
-let onMouseMove = (e)=>{
+let onMouseMove = (pageX, pageY)=>{
     if(isMoving === true){
-        console.log("works")
-    let value = e.currentTarget;
-    let shiftX = e.clientX - calculator.current.getBoundingClientRect().left;
-    let shiftY = e.clientY - calculator.current.getBoundingClientRect().top;
-    console.log(shiftX)
-    calculator.current.style.left = e.pageX - shiftX + 'px';
-    //console.log(value.style.left = e.pageX - shiftX + 'px');
-    calculator.current.style.top = e.pageY - shiftY + 'px';
+    calculator.current.style.position = 'absolute';
+    calculator.current.style.zIndex = 1000;
+    calculator.current.style.left = pageX - shiftX + 'px';
+    calculator.current.style.top = pageY - shiftY + 'px';
     }
+}
+let mouseMoveTrigger = (e)=>{
+    onMouseMove(e.pageX, e.pageY) // PAGE X Y PAGE Y CORRESPONDEN A LA UBICACION DEL MOUSE RESPECTO DEL BORDE IZQUIERDO DE LA PAG
 }
 
 
     return (
         <div className="App" ref={app}>
-            <div style={style.calculadoraContainer} onMouseDown={(e)=>onMouseDown(e)} onMouseMove={(e)=>onMouseMove(e)} onMouseUp={()=>setMoving(false)} ref={calculator}>
+            <div style={style.calculadoraContainer} onMouseDown={(e)=>onMouseDown(e)} onMouseMove={(e)=>mouseMoveTrigger(e)} onMouseUp={()=>setMoving(false)} ref={calculator} onMouseLeave={()=>setMoving(false)}>
                 <div>
                     <input
                         ref={focusInput}
