@@ -1,6 +1,7 @@
 .App {
   display: grid;
-  height: 100vh;
+  min-height: 100vh;
+  max-height: 100%;
   background-color: gray;
   justify-content: center;
   align-items: center;
@@ -8,14 +9,14 @@
 }
 @keyframes buttonTranslate {
   from {
-    box-shadow: 0 2px gray;
+    box-shadow: 0 12px gray;
   }
   50%{
-    transform: translateY(2px);
-    box-shadow: 0 0.2px rgb(33, 33, 33);
+    transform: translateY(8px);
+    box-shadow: 0 4px #666;
   }
   to {
     transform: translateY(0px);
-    box-shadow: 0 2px gray;
+    box-shadow: 0 12px gray;
   }
 }

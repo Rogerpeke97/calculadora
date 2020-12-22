@@ -1,44 +1,66 @@
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import './App.css';
 let style = {
     littleSquares: {
       flex: "25%",
-      boxShadow: "0 2px gray",
+      boxShadow: "0 12px gray",
       backgroundColor: "#4CAF50",
       transition: 'all 0.2s ease-out',
-      borderRadius: "5px",
-      marginTop: "3px",
-      marginLeft: "1px",
-      marginRight: "1px"
+      borderRadius: "15px",
+      marginTop: "13px",
+      marginLeft: "11px",
+      marginRight: "11px"
     },
     calculadoraContainer:{
         backgroundColor: "#7F5A83",
         paddingBottom:"5%",
-        borderRadius: "5px",
-        boxShadow: "5px 5px 6px 0px #000000"
-
+        borderRadius: "5%",
+        boxShadow: "6px 6px 6px 0px rgb(70, 70, 70), 15px 15px 16px 0px #000000",
+        display: "grid",
+        height:"500px",
+        width: "500px",
     },
     topBottomButtons:{
         flex:"25%",
         backgroundColor: "#4CAF50", 
-        borderRadius: "5px",
-        boxShadow: "0 2px gray",
-        marginTop: "3px",
-        marginLeft: "6px",
-        marginRight: "1px"
+        borderRadius: "15px",
+        boxShadow: "0 12px gray",
+        marginTop: "13px",
+        marginLeft: "17px",
+        marginRight: "11px",
+        marginBottom: "11px"
     },
     largeButtons: {
-        flex:"75%",
-        boxShadow: "0 2px gray",
-        marginTop: "3px",
-        marginBottom: "1px",
-        marginLeft: "1px",
-        borderRadius: "5px",
+        flex:"87%",
+        boxShadow: "0 12px gray",
+        marginTop: "13px",
+        marginBottom: "5px",
+        marginLeft: "11px",
+        marginRight: "7px",
+        borderRadius: "15px",
         backgroundColor: "#4CAF50", 
+    },
+    input:{
+        textAlign: "right",
+        display: "grid",
+        backgroundColor: "black",
+        borderRadius: "15px",
+        boxShadow: "2.5px 2.5px 3px 0px #000000",
+        color: "white",
+        width: "90%",
+        height: "70%",
+        marginBottom: "5%",
+        border: "0px",
+        fontSize: "2rem",
+        marginTop: "5%",
+        marginLeft: "5%",
+        marginRight: "5%"
     }
 }
 
 function App() {
+
+
     let checkIfMathExpression = (e) => {//CHEQUEAR SI EL INPUT INGRESADO ES UNA EXPRESION MATEMATICA
         let array = ["*", "/", "+", "-"]
         for (let i = 0; i < array.length; i++) {
@@ -48,6 +70,8 @@ function App() {
         }
         return false
     }
+
+
     let inputCheck = (value)=>{
       console.log(value + "THERE IS A MATH EXPRESSION AND A NUMBER")
       if (isNaN(value) && checkIfMathExpression(value.slice(value.length - 1)) === true && isNaN(value.slice(0, -1)) === false) {
@@ -73,15 +97,28 @@ function App() {
           setMessage("")
       }
     }
+
+
     const [input,
         setInput] = useState(0)//INPUT DEL USUARIO
+
+
     const [message,
         setMessage] = useState("")// MENSAJE DE ERROR EN CASO QUE SE INGRESE UN VALOR NO PERMITIDO
+
+
     const [mathOperation,
         setMathOperation] = useState(null)//TIPO DE OPERACION MATEMATICA GUARDADA LUEGO DE INGRESARLA PARA APLICARLA AL INGRESAR OTRO NUMERO
+
+
     const [savedValue,
         setValue] = useState("")//VALOR GUARDADO LUEGO DE INGRESAR UNA EXPRESION MATEMATICA PARA LUEGO APLICARLA EN LA FUNCION SOLVEMATH()
-    let solveMath = (passedValue) => {
+
+
+    const focusInput = useRef(0);// PARA QUE CUANDO EL FOCUS DEL INPUT SE PIERDE SE VUELVA A ACTIVAR, ASI LA CALCULADORA ES INTERACTIVA CON EL TECLADO
+
+
+    let solveMath = (passedValue) => {// RESUELVE EL CALCULO DEPENDIENDO LA EXPRESION
         if (mathOperation !== "" && savedValue !== "") {// EN EL CASO DE QUE HAYA UN VALOR GUARDADO Y HAYA UNA EXPRESION MATEMATICA, SE REALIZA EL CALCULO
             switch (mathOperation) {
                 case "-":
@@ -109,8 +146,12 @@ function App() {
             setInput("")
         }
     }
-    const[animationInProgress, setAnimation] = useState(false)
-    let changeCssButton = (e)=>{
+
+
+    const[animationInProgress, setAnimation] = useState(false)// ANIMACION EN PROGRESO DEL BOTON
+
+
+    let changeCssButton = (e)=>{// ANIMACION DEL BOTON
        let value = e.currentTarget;
        console.log(animationInProgress)
        if(animationInProgress === false){
@@ -120,18 +161,49 @@ function App() {
            }
        }
     }
+//MOVER LA CALCULADORA ALREDEDOR DEL DIV APP
+const [isMoving, setMoving] = useState(false)
+const app = useRef(0)
+const calculator = useRef(0)
+let onMouseDown = (e)=>{
+    if(isMoving === false){
+        console.log("workClick")
+    setMoving(true)
+    let value = e.currentTarget;
+    value.style.position = 'absolute';
+    value.style.zIndex = 1000;
+    onMouseMove(e);
+    }
+}
+let onMouseMove = (e)=>{
+    if(isMoving === true){
+        console.log("works")
+    let value = e.currentTarget;
+    let shiftX = e.clientX - calculator.current.getBoundingClientRect().left;
+    let shiftY = e.clientY - calculator.current.getBoundingClientRect().top;
+    console.log(shiftX)
+    calculator.current.style.left = e.pageX - shiftX + 'px';
+    //console.log(value.style.left = e.pageX - shiftX + 'px');
+    calculator.current.style.top = e.pageY - shiftY + 'px';
+    }
+}
+
+
     return (
-        <div className="App">
-            <div style={style.calculadoraContainer}>
+        <div className="App" ref={app}>
+            <div style={style.calculadoraContainer} onMouseDown={(e)=>onMouseDown(e)} onMouseMove={(e)=>onMouseMove(e)} onMouseUp={()=>setMoving(false)} ref={calculator}>
                 <div>
                     <input
+                        ref={focusInput}
                         onChange={(e) => inputCheck(e.currentTarget.value)}
                     // AL APRETAR ENTER SE RESUELVE LA OPERACION
                         onKeyDown={(e) => e.key === "Enter" 
                         ? solveMath(e.currentTarget.value)
                         : null}
                         onClick={()=>setInput("")}
-                        style={{textAlign: "right"}}
+                        style={style.input}
+                        autoFocus= {true}// CUANDO CARGA PODES USAR EL TECLADO PARA HACER CALCULOS! HACE FOCUS EN EL INPUT
+                        onBlur={()=>focusInput.current.focus()}
                         value={input}/>
                     <div>{message}</div>
                 </div>
@@ -144,7 +216,7 @@ function App() {
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "7"), 10)/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}>7</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "7"), 10); changeCssButton(e)/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}}>7</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "8"), 10); changeCssButton(e)}}>8</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "9"), 10); changeCssButton(e)}}>9</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "*"); changeCssButton(e)}}>X</div>
