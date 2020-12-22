@@ -3,7 +3,38 @@ import './App.css';
 let style = {
     littleSquares: {
       flex: "25%",
-      boxShadow: "0px 0px 0px 0.5px white inset"
+      boxShadow: "0 2px gray",
+      backgroundColor: "#4CAF50",
+      transition: 'all 0.2s ease-out',
+      borderRadius: "5px",
+      marginTop: "3px",
+      marginLeft: "1px",
+      marginRight: "1px"
+    },
+    calculadoraContainer:{
+        backgroundColor: "#7F5A83",
+        paddingBottom:"5%",
+        borderRadius: "5px",
+        boxShadow: "5px 5px 6px 0px #000000"
+
+    },
+    topBottomButtons:{
+        flex:"25%",
+        backgroundColor: "#4CAF50", 
+        borderRadius: "5px",
+        boxShadow: "0 2px gray",
+        marginTop: "3px",
+        marginLeft: "6px",
+        marginRight: "1px"
+    },
+    largeButtons: {
+        flex:"75%",
+        boxShadow: "0 2px gray",
+        marginTop: "3px",
+        marginBottom: "1px",
+        marginLeft: "1px",
+        borderRadius: "5px",
+        backgroundColor: "#4CAF50", 
     }
 }
 
@@ -78,9 +109,20 @@ function App() {
             setInput("")
         }
     }
+    const[animationInProgress, setAnimation] = useState(false)
+    let changeCssButton = (e)=>{
+       let value = e.currentTarget;
+       console.log(animationInProgress)
+       if(animationInProgress === false){
+           value.style.animation = 'buttonTranslate 0.2s normal forwards ease-out' 
+           value.onanimationend = ()=>{
+               value.style.animation = 'none'
+           }
+       }
+    }
     return (
         <div className="App">
-            <div>
+            <div style={style.calculadoraContainer}>
                 <div>
                     <input
                         onChange={(e) => inputCheck(e.currentTarget.value)}
@@ -88,6 +130,7 @@ function App() {
                         onKeyDown={(e) => e.key === "Enter" 
                         ? solveMath(e.currentTarget.value)
                         : null}
+                        onClick={()=>setInput("")}
                         style={{textAlign: "right"}}
                         value={input}/>
                     <div>{message}</div>
@@ -95,38 +138,38 @@ function App() {
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={{flex:"75%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>{setValue("");setMathOperation(""); setInput("")}}>C</div>
-                    <div style={{flex:"25%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>inputCheck(input + "/")}>%</div>
+                    <div style={style.largeButtons} onClick={(e)=>{setValue("");setMathOperation(""); setInput(""); changeCssButton(e)}}>C</div>
+                    <div style={style.topBottomButtons} onClick={(e)=>{inputCheck(input + "/"); changeCssButton(e)}}>%</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
                     <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "7"), 10)/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}>7</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "8"), 10)}>8</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "9"), 10)}>9</div>
-                    <div style={style.littleSquares} onClick={()=>inputCheck(input + "*")}>X</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "8"), 10); changeCssButton(e)}}>8</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "9"), 10); changeCssButton(e)}}>9</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "*"); changeCssButton(e)}}>X</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "4"), 10)}>4</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "5"), 10)}>5</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "6"), 10)}>6</div>
-                    <div style={style.littleSquares} onClick={()=>inputCheck(input + "-")}>-</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "4"), 10); changeCssButton(e)}}>4</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "5"), 10); changeCssButton(e)}}>5</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "6"), 10); changeCssButton(e)}}>6</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "-"); changeCssButton(e)}}>-</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "1"), 10)}>1</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "2"), 10)}>2</div>
-                    <div style={style.littleSquares} onClick={()=>setInput(parseInt(input + "3"), 10)}>3</div>
-                    <div style={style.littleSquares} onClick={()=>inputCheck(input + "+")}>+</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "1"), 10); changeCssButton(e)}}>1</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "2"), 10); changeCssButton(e)}}>2</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "3"), 10); changeCssButton(e)}}>3</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "+"); changeCssButton(e)}}>+</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={{flex:"75%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>setInput(input + "0")}>0</div>
-                    <div style={{flex:"25%", boxShadow: "0px 0px 0px 0.5px white inset"}} onClick={()=>solveMath(input)}>=</div>
+                    <div style={style.largeButtons} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(input + "0"); changeCssButton(e)}}>0</div>
+                    <div style={style.topBottomButtons} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{solveMath(input); changeCssButton(e)}}>=</div>
                 </div>
             </div>
         </div>

@@ -6,3 +6,16 @@
   align-items: center;
   text-align: center;
 }
+@keyframes buttonTranslate {
+  from {
+    box-shadow: 0 2px gray;
+  }
+  50%{
+    transform: translateY(2px);
+    box-shadow: 0 0.2px rgb(33, 33, 33);
+  }
+  to {
+    transform: translateY(0px);
+    box-shadow: 0 2px gray;
+  }
+}
