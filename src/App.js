@@ -215,6 +215,16 @@ let mouseMoveTrigger = (e)=>{
 //FONTAWESOME
 const [iconState, setIconState] = useState(0)
 
+//AÑADIR NUMEROS AL INPUT
+
+let addNumbers = (e, numero)=>{
+    console.log(input)
+    if(input < 999999999999999){
+    setInput(parseInt(input + numero), 10);
+    changeCssButton(e)
+    }
+}
+
 // ON MOUSEUP SE LEVANTA EL MOUSE Y UTILIZAMOS EL DIV PADRE PARA TRACKEAR EL MOVIMIENTO/ EVENTOS 
     return (
         <div className="App" ref={app} onMouseUp={()=>{setMoving(false); setIconState(0)}}  onMouseMove={(e)=>mouseMoveTrigger(e)}>
@@ -246,31 +256,31 @@ const [iconState, setIconState] = useState(0)
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "7"), 10); changeCssButton(e)/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}}>7</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "8"), 10); changeCssButton(e)}}>8</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "9"), 10); changeCssButton(e)}}>9</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "7")/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}>7</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "8")}>8</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "9")}>9</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "*"); changeCssButton(e)}}>X</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "4"), 10); changeCssButton(e)}}>4</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "5"), 10); changeCssButton(e)}}>5</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "6"), 10); changeCssButton(e)}}>6</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "4")}>4</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "5")}>5</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "6")}>6</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "-"); changeCssButton(e)}}>-</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "1"), 10); changeCssButton(e)}}>1</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "2"), 10); changeCssButton(e)}}>2</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(parseInt(input + "3"), 10); changeCssButton(e)}}>3</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "1")}>1</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "2")}>2</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "3")}>3</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "+"); changeCssButton(e)}}>+</div>
                 </div>
                 <div style={{
                     display: "flex"
                 }}>
-                    <div style={style.largeButtons} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{setInput(input + "0"); changeCssButton(e)}}>0</div>
+                    <div style={style.largeButtons} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "0")}>0</div>
                     <div style={style.topBottomButtons} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{solveMath(input); changeCssButton(e)}}>=</div>
                 </div>
             </div>
