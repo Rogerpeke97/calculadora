@@ -1,5 +1,11 @@
 import {useState, useRef} from 'react';
 import './App.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { faChild, faDiagnoses, faTrophy, faSignOutAlt, faMouse } from '@fortawesome/free-solid-svg-icons'
+
+
 let style = {
     littleSquares: {
       flex: "25%",
@@ -17,7 +23,7 @@ let style = {
         borderRadius: "5%",
         boxShadow: "6px 6px 6px 0px rgb(70, 70, 70), 15px 15px 16px 0px #000000",
         display: "grid",
-        height:"500px",
+        height:"600px",
         width: "500px",
     },
     topBottomButtons:{
@@ -170,14 +176,14 @@ const [shiftY, setShiftY] = useState(0)
 let onMouseDown = (e)=>{
     if(isMoving === false){
     setShiftX(e.clientX - calculator.current.getBoundingClientRect().left);
-    setShiftY(e.clientY - app.current.getBoundingClientRect().top);
+    setShiftY(e.clientY - calculator.current.getBoundingClientRect().top);
     setMoving(true)
     onMouseMove(e.pageX, e.pageY)
     }
 }
 let onMouseMove = (pageX, pageY)=>{
     if(isMoving === true){
-    calculator.current.style.position = 'absolute';
+        calculator.current.style.position = "absolute";
     calculator.current.style.zIndex = 1000;
     calculator.current.style.left = pageX - shiftX + 'px';
     calculator.current.style.top = pageY - shiftY + 'px';
@@ -187,11 +193,14 @@ let mouseMoveTrigger = (e)=>{
     onMouseMove(e.pageX, e.pageY) // PAGE X Y PAGE Y CORRESPONDEN A LA UBICACION DEL MOUSE RESPECTO DEL BORDE IZQUIERDO DE LA PAG
 }
 
-
+// ON MOUSEUP SE LEVANTA EL MOUSE Y UTILIZAMOS EL DIV PADRE PARA TRACKEAR EL MOVIMIENTO/ EVENTOS 
     return (
-        <div className="App" ref={app}>
-            <div style={style.calculadoraContainer} onMouseDown={(e)=>onMouseDown(e)} onMouseMove={(e)=>mouseMoveTrigger(e)} onMouseUp={()=>setMoving(false)} ref={calculator} onMouseLeave={()=>setMoving(false)}>
+        <div className="App" ref={app} onMouseUp={()=>setMoving(false)}  onMouseMove={(e)=>mouseMoveTrigger(e)}>
+            <div style={style.calculadoraContainer} ref={calculator}>
                 <div>
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginRight: "25px"}}>
+                    <FontAwesomeIcon onMouseDown={(e)=>onMouseDown(e)} icon={faMouse} />
+                    </div>
                     <input
                         ref={focusInput}
                         onChange={(e) => inputCheck(e.currentTarget.value)}
