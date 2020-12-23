@@ -3,7 +3,7 @@ import './App.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faChild, faDiagnoses, faTrophy, faSignOutAlt, faMouse } from '@fortawesome/free-solid-svg-icons'
+import { faMouse } from '@fortawesome/free-solid-svg-icons'
 
 
 let style = {
