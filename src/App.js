@@ -26,8 +26,8 @@ let style = {
         display: "grid",
         minHeight:"400px",
         maxHeight:"400px",
-        minWidth:"250px",
-        maxWidth:"350px",
+        minWidth:"320px",
+        maxWidth:"320px",
         color: "white",
         fontWeight: "bold",
         textShadow: "2px 2px 2px black",
@@ -62,14 +62,14 @@ let style = {
         borderRadius: "15px",
         boxShadow: "2.5px 2.5px 3px 0px #000000",
         color: "white",
-        width: "90%",
-        height: "70%",
+        width: "314px",
+        height: "50px",
         marginBottom: "5%",
         border: "0px",
-        fontSize: "2rem",
+        fontSize: "1.3rem",
         marginTop: "5%",
-        marginLeft: "5%",
-        marginRight: "5%"
+        outline: "none",
+        appereance: "none"
     },
     fontAwesomeDrag: {
         color: "white",
@@ -95,29 +95,35 @@ function App() {
         return false
     }
 
+    // AÑADIR NUMEROS PARA EL INPUT MANUAL 
+    let addNumbersManual = (numero)=>{
+        if(input.toString().length === 20){
+        setInput(input);
+        }
+        else{
+            setInput(parseInt(input + numero), 10);
+        }
+    }
+
 
     let inputCheck = (value)=>{
-      console.log(value + "THERE IS A MATH EXPRESSION AND A NUMBER")
-      if (isNaN(value) && checkIfMathExpression(value.slice(value.length - 1)) === true && isNaN(value.slice(0, -1)) === false) {
+      if (isNaN(value) && checkIfMathExpression(value) === true) {
         //SI EL ULTIMO CARACTER AGREGADO ES UNA EXPRESION MATEMATICA ENTONCES APLICA LA FUNCION SOLVEMATH
         //EL SLICE ES PARA CHEQUEAR QUE ANTES DE LA EXPRESION HAY UN NUMERO VALIDO PARA REALIZAR LA OPERACION Y TAMBIEN PARA VERIFICAR SI ES UNA EXPRESION
         //MATEMATICA O NO
-        console.log(value + "THERE IS A MATH EXPRESSION AND A NUMBER")
-          setMathOperation(value.slice(value.length - 1));
-          solveMath(value.slice(0, -1));
+          setMathOperation(value);
+          solveMath(input);
       } 
-      else if (isNaN(value) && checkIfMathExpression(value) === false && value.length > 0) {
+      else if (isNaN(value) && checkIfMathExpression(value) === false) {
          // EN CASO DE QUE EL CARACTER INGRESADO NO SEA UNA EXPRESION MATEMATICA SE HACE DISPLAY DEL MENSAJE DE ERROR Y
          // SE ELIMINAN LOS VALORES GUARDADOS DE LA OPERACION ANTERIOR
-         console.log(value + "THERE ISNT A MATH EXPRESSION BUT THERE IS A NUMBER")
           setValue("");
           setMathOperation("");
           setInput("");
           setMessage("La calculadora sólo acepta números y símbolos matematicos!")
       }
       else{
-        console.log(value + "NOTHING")
-          setInput(value);
+          addNumbersManual(value);
           setMessage("")
       }
     }
@@ -146,20 +152,19 @@ function App() {
         if (mathOperation !== "" && savedValue !== "") {// EN EL CASO DE QUE HAYA UN VALOR GUARDADO Y HAYA UNA EXPRESION MATEMATICA, SE REALIZA EL CALCULO
             switch (mathOperation) {
                 case "-":
-                    setInput((parseInt(savedValue) - parseInt(passedValue)));
+                    setInput(savedValue - parseInt(passedValue));
                     setMathOperation("");
                     break
                 case "+":
-                    setInput((parseInt(savedValue) + parseInt(passedValue)));
+                    setInput(savedValue + parseInt(passedValue));
                     setMathOperation("");
                     break
                 case "/":
-                    setInput((parseInt(savedValue) / parseInt(passedValue)));
+                    setInput(savedValue / parseInt(passedValue));
                     setMathOperation("");
                     break
                 case "*":
-                    setInput((parseInt(savedValue) * parseInt(passedValue)));
-                    console.log("SADSD");
+                    setInput(savedValue * parseInt(passedValue));
                     setMathOperation("");
                     break
                 default:
@@ -177,7 +182,6 @@ function App() {
 
     let changeCssButton = (e)=>{// ANIMACION DEL BOTON
        let value = e.currentTarget;
-       console.log(animationInProgress)
        if(animationInProgress === false){
            value.style.animation = 'buttonTranslate 0.2s normal forwards ease-out' 
            value.onanimationend = ()=>{
@@ -192,7 +196,6 @@ const calculator = useRef(0)
 const [shiftX, setShiftX] = useState(0)
 const [shiftY, setShiftY] = useState(0)
 let onMouseDown = (e)=>{
-    setLoaded(true)
     if(isMoving === false){
     setShiftX(e.clientX - calculator.current.getBoundingClientRect().left);
     setShiftY(e.clientY - calculator.current.getBoundingClientRect().top);
@@ -202,7 +205,7 @@ let onMouseDown = (e)=>{
 }
 let onMouseMove = (pageX, pageY)=>{
     if(isMoving === true){
-        calculator.current.style.position = "absolute";
+    calculator.current.style.position = "absolute";
     calculator.current.style.zIndex = 1000;
     calculator.current.style.left = pageX - shiftX + 'px';
     calculator.current.style.top = pageY - shiftY + 'px';
@@ -215,15 +218,20 @@ let mouseMoveTrigger = (e)=>{
 //FONTAWESOME
 const [iconState, setIconState] = useState(0)
 
+
 //AÑADIR NUMEROS AL INPUT
-const [loaded, setLoaded] = useState(false);
+// CUANDO LLEGA AL VALOR MAXIMO AL AGREGAR e CAMBIA EL LENGTH A 20
 let addNumbers = (e, numero)=>{
-    console.log(input)
-    if(input < 999999999999999){
-    setInput(parseInt(input + numero), 10);
+    if(input.toString().length === 20){
+    setInput(input);
     changeCssButton(e)
     }
+    else{
+        setInput(parseInt(input + numero), 10);
+        changeCssButton(e)
+    }
 }
+
 // MANEJAR WINDOW RESIZE 
 
   useEffect(()=>{
@@ -244,11 +252,11 @@ let addNumbers = (e, numero)=>{
                     </div>
                     <input
                         ref={focusInput}
-                        onChange={(e) => inputCheck(e.currentTarget.value)}
+                       // onChange={(e) => inputCheck(e.currentTarget.value)}
                     // AL APRETAR ENTER SE RESUELVE LA OPERACION
                         onKeyDown={(e) => e.key === "Enter" 
                         ? solveMath(e.currentTarget.value)
-                        : null}
+                        : inputCheck(e.key)}
                         onClick={()=>setInput("")}
                         style={style.input}
                         autoFocus= {true}// CUANDO CARGA PODES USAR EL TECLADO PARA HACER CALCULOS! HACE FOCUS EN EL INPUT
@@ -260,7 +268,7 @@ let addNumbers = (e, numero)=>{
                     display: "flex"
                 }}>
                     <div style={style.largeButtons} onClick={(e)=>{setValue("");setMathOperation(""); setInput(""); changeCssButton(e)}}>C</div>
-                    <div style={style.topBottomButtons} onClick={(e)=>{inputCheck(input + "/"); changeCssButton(e)}}>%</div>
+                    <div style={style.topBottomButtons} onClick={(e)=>{inputCheck("/"); changeCssButton(e)}}>%</div>
                 </div>
                 <div style={{
                     display: "flex"
@@ -268,7 +276,7 @@ let addNumbers = (e, numero)=>{
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "7")/*REMOVER EL 0 INICIAL AL INGRESAR UN VALOR NUEVO*/}>7</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "8")}>8</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "9")}>9</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "*"); changeCssButton(e)}}>X</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck("*"); changeCssButton(e)}}>X</div>
                 </div>
                 <div style={{
                     display: "flex"
@@ -276,7 +284,7 @@ let addNumbers = (e, numero)=>{
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "4")}>4</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "5")}>5</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "6")}>6</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "-"); changeCssButton(e)}}>-</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck("-"); changeCssButton(e)}}>-</div>
                 </div>
                 <div style={{
                     display: "flex"
@@ -284,7 +292,7 @@ let addNumbers = (e, numero)=>{
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "1")}>1</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "2")}>2</div>
                     <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>addNumbers(e, "3")}>3</div>
-                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck(input + "+"); changeCssButton(e)}}>+</div>
+                    <div style={style.littleSquares} onAnimationStart={()=>{setAnimation(true)}} onAnimationEnd={()=>setAnimation(false)} onClick={(e)=>{inputCheck("+"); changeCssButton(e)}}>+</div>
                 </div>
                 <div style={{
                     display: "flex"
