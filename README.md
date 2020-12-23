@@ -8,6 +8,6 @@ Una vez abierta la app van a poder mover la calculadora alrededor de la ventana,
 Si se ingresa un valor que no es apropiado para la calculadora, un mensaje de error se va a desprender de la misma<br />
 borrando cualquier operacion anterior.<br />
 ### `La app debería verse asi`
-<img src="test.gif" width="40" height="80" />
+<img src="/public/test.gif" width="80" height="80" />
 
 
